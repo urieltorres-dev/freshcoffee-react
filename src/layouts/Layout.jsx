@@ -1,5 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Modal from 'react-modal'
+import { ToastContainer } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css"
 import Sidebar from '../components/Sidebar'
 import Resumen from '../components/Resumen'
 import ModalProducto from '../components/ModalProducto'
@@ -20,7 +22,7 @@ Modal.setAppElement('#root')
 
 export default function Layout() {
 
-    const { modal, handleClickModal } = useCafeteria()
+    const { modal } = useCafeteria()
 
     return (
         <>
@@ -37,6 +39,8 @@ export default function Layout() {
             <Modal isOpen={modal} style={customStyles}>
                 <ModalProducto />
             </Modal>
+
+            <ToastContainer />
         </>
     )
 }

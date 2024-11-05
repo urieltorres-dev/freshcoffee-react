@@ -1,11 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useCafeteria from "../hooks/useCafeteria"
 import { currencyFormat } from "../helpers"
 
 export default function ModalProducto() {
 
-    const { producto, handleClickModal } = useCafeteria()
-    const [ cantidad, setCantidad ] = useState(1)
+    const { producto, handleClickModal, handleAgregarPedido, pedido } = useCafeteria()
+    const [cantidad, setCantidad] = useState(1)
+    const [edicion, setEdicion] = useState(false)
+    
+    useEffect(() => {
+        if(pedido.some(pedidoState => pedidoState.id === producto.id)) {
+            const productoEdicion = pedido.filter(pedidoState => pedidoState.id === producto.id)[0]
+            setCantidad(productoEdicion.cantidad)
+            setEdicion(true)
+        }
+    }, [pedido])
 
     return (
         <div className="md:flex gap-10 ite">
@@ -66,8 +75,12 @@ export default function ModalProducto() {
                 <button
                     type="button"
                     className="bg-indigo-600 hover:bg-indigo-800 px-5 py-2 mt-5 text-white font-bold rounded"
+                    onClick={() => {
+                        handleAgregarPedido({...producto, cantidad})
+                        handleClickModal()
+                    }}
                 >
-                    Añadir
+                    {edicion ? 'Guardar cambios' : 'Añadir al pedido'}
                 </button>
             </div>
         </div>
